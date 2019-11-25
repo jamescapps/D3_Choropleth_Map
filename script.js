@@ -1,9 +1,9 @@
 const width = 1500
 const height = 400
 
-/*var colorScale = d3.scaleThreshold()
-  .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-  .range(d3.schemeBlues[7])*/
+var colorScale = d3.scaleThreshold()
+  .domain(d3.range(2.6, 75.1, (75.1-2.6)/8))
+  .range(d3.schemeBlues[7])
 
 var color = d3.scaleThreshold()
     .domain(d3.range(2.6, 75.1, (75.1-2.6)/8))
@@ -13,8 +13,8 @@ let colors = ["#cae1f7", "#add8ff", "#80b9ee", "#559ce4", "#0078d4", "#235a9f", 
 
 let svg =  d3.select("#chart")
              .append("svg")
-             .attr("width", width - 200)
-             .attr("height", height + 130)
+             .attr("width", width)
+             .attr("height", height + 200)
 
 let tooltip = d3.select("#chart")
                 .append("div")
@@ -32,7 +32,7 @@ for(var i=0;i<colors.length;i++){
            .attr("width", 20)
            .attr("height", 20)
            .attr("fill", colors[colors.length - 1 - i])
-           .attr("transform", "translate(-500, -450)")
+           .attr("transform", "translate(-200, -450)")
 }
 
 var path = d3.geoPath();
@@ -59,6 +59,7 @@ function ready(error, us, education) {
      .enter()
      .append("path")
      .attr("class", "county")
+     .attr("transform", "translate(475, -0)")
      /* .attr("d", d3.geoPath()
         .projection(projection)
       )*/
@@ -74,15 +75,16 @@ function ready(error, us, education) {
         }
           return 0
        })
+  .attr("d", path)
      .attr("fill", function(d) { 
         var result = education.filter(function( obj ) {
           return obj.fips == d.id;
         });
         if(result[0]){
-          return color(result[0].bachelorsOrHigher)
+          return colorScale(result[0].bachelorsOrHigher)
         }
         //could not find a matching fips id in the data
-        return color(0)
+        return colorScale(0)
        })
       .on("mouseover", function(d) {      
         tooltip.style("opacity", .9)
@@ -112,6 +114,7 @@ function ready(error, us, education) {
       .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
       .attr("class", "states")
       .attr("d", path)
+      .attr("transform", "translate(475, 0)")
   /*.attr("fill", function (d) {
         d.total = data.get(d.id) || 0;
         return colorScale(d.total)
