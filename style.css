@@ -47,4 +47,9 @@
   h3 {
     font-size: .5rem; 
   }
+  #tooltip {
+    width: 75px;
+    height: 50px;
+    font-size: .5rem;
+  }
 }

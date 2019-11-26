@@ -80,7 +80,7 @@ function usa(error, county, education) {
         tooltip.html(() => {
           let result = education.filter(obj => obj.fips == d.id) 
           if(result[0]){
-            return result[0]["area_name"] + ", " + result[0]["state"] + ": " + result[0].bachelorsOrHigher + "%"
+            return result[0]["area_name"] + ", " + result[0]["state"] + "  " + result[0].bachelorsOrHigher + "%"
           }
         })
         .attr("data-education", function() {
